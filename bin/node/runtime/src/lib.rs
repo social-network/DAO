@@ -477,9 +477,9 @@ impl pallet_staking::Trait for Runtime {
 }
 
 parameter_types! {
-	pub const LaunchPeriod: BlockNumber = 7 * 24 * 60 * MINUTES;
-	pub const VotingPeriod: BlockNumber = 7 * 24 * 60 * MINUTES;
-	pub const FastTrackVotingPeriod: BlockNumber = 1 * 24 * 60 * MINUTES;
+	pub const LaunchPeriod: BlockNumber = 28 * 24 * 60 * MINUTES;
+	pub const VotingPeriod: BlockNumber = 28 * 24 * 60 * MINUTES;
+	pub const FastTrackVotingPeriod: BlockNumber = 3 * 24 * 60 * MINUTES;
 	pub const InstantAllowed: bool = true;
 	pub const MinimumDeposit: Balance = 100 * DOLLARS;
 	pub const EnactmentPeriod: BlockNumber = 30 * 24 * 60 * MINUTES;
@@ -953,6 +953,7 @@ impl pallet_swaps::Trait for Runtime {
 }
 
 parameter_types! {
+	pub const ExistentialDepositOfMissionTokens: u128 = 1_000;
 	pub const MaxMissionTokensSupply: u128 = 7_777_777_777;
 }
 
@@ -960,9 +961,7 @@ impl pallet_mission_tokens::Trait for Runtime {
 	type Event = Event;
 	type Balance = u128;
 	type MissionTokenId = u32;
-	type ExistentialDeposit = ExistentialDeposit;
-	type AccountStore = pallet_mission_tokens::Module<Runtime>;
-	type AccountData = pallet_mission_tokens::AccountData<Self::Balance>;
+	type ExistentialDeposit = ExistentialDepositOfMissionTokens;
 	type OnNewAccount = ();
 	type MaxMissionTokensSupply = MaxMissionTokensSupply;
 }
