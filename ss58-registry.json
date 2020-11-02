@@ -300,12 +300,12 @@
 		},
 		{
 			"prefix": 47,
-			"network": "reserved47",
-			"displayName": "This prefix is reserved.",
-			"symbols": null,
-			"decimals": null,
-			"standardAccount": null,
-			"website": null
+			"network": "social-network",
+			"displayName": "Social Network",
+			"symbols": ["CHI"],
+			"decimals": [14],
+			"standardAccount": "*25519",
+			"website": ["https://social.network/"]
 		},
 		{
 			"prefix": 48,
