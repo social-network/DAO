@@ -74,5 +74,35 @@ mod test {
         assert_eq!(super::compute_total_payout(4_000_000u32, TOTAL_TOKENS3), (2_392_434, 3_417_764));
         assert_eq!(super::compute_total_payout(5_000_000u32, TOTAL_TOKENS3), (1_009_090, 1_441_558));
         assert_eq!(super::compute_total_payout(9_000_000u32, TOTAL_TOKENS3), (0, 0));
+
+
+        const TOTAL_TOKENS4: u128 = 1_000_000_000;
+
+        assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS4), (700_294_000, 1_000_420_000));
+        assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS4), (699_999_876, 999_999_824));
+        assert_eq!(super::compute_total_payout(1_000u32, TOTAL_TOKENS4), (699_705_753, 999_579_648));
+        assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS4), (694_432_692, 992_046_703));
+        assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS4), (643_838_685, 919_769_551));
+        assert_eq!(super::compute_total_payout(1_000_000u32, TOTAL_TOKENS4), (302_087_481, 431_553_545));
+        assert_eq!(super::compute_total_payout(2_000_000u32, TOTAL_TOKENS4), (130_177_452, 185_967_789));
+        assert_eq!(super::compute_total_payout(3_000_000u32, TOTAL_TOKENS4), (55_962_182, 79_945_975));
+        assert_eq!(super::compute_total_payout(4_000_000u32, TOTAL_TOKENS4), (23_924_348, 34_177_640));
+        assert_eq!(super::compute_total_payout(5_000_000u32, TOTAL_TOKENS4), (10_090_906, 14_415_580));
+        assert_eq!(super::compute_total_payout(9_000_000u32, TOTAL_TOKENS4), (0, 0));
+
+
+        const TOTAL_TOKENS5: u128 = 10_000_000_000;
+
+        assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS5), (7_002_940_000, 10_004_200_000));
+        assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS5), (6_999_998_765, 9_999_998_236));
+        assert_eq!(super::compute_total_payout(1_000u32, TOTAL_TOKENS5), (6_997_057_530, 9_995_796_472));
+        assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS5), (6_944_326_918, 9_920_467_027));
+        assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS5), (6_438_386_850, 919_769_5501));
+        assert_eq!(super::compute_total_payout(1_000_000u32, TOTAL_TOKENS5), (3_020_874_810, 4_315_535_444));
+        assert_eq!(super::compute_total_payout(2_000_000u32, TOTAL_TOKENS5), (1_301_774_520, 1_859_677_887));
+        assert_eq!(super::compute_total_payout(3_000_000u32, TOTAL_TOKENS5), (559_621_820, 799_459_743));
+        assert_eq!(super::compute_total_payout(4_000_000u32, TOTAL_TOKENS5), (239_243_477, 341_776_396));
+        assert_eq!(super::compute_total_payout(5_000_000u32, TOTAL_TOKENS5), (100_909_053, 144_155_791));
+        assert_eq!(super::compute_total_payout(9_000_000u32, TOTAL_TOKENS5), (0, 0));
 	}
 }
