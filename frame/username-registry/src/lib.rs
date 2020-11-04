@@ -80,6 +80,7 @@ pub trait Trait: frame_system::Trait {
 decl_storage! {
     trait Store for Module<T: Trait> as ValidatorRegistry {
         pub RegistrationOf get(fn registration_of): map hasher(twox_64_concat) Vec<u8> => Option<Registration<T::AccountId>>;
+        pub Account get(fn account): map hasher(twox_64_concat) T::AccountId => Option<Vec<u8>>;
 
         pub Registrars get(fn registrars): Vec<Option<T::AccountId>>;
     }
@@ -110,6 +111,7 @@ decl_error! {
         UnregisterForbidden,
         UsernameNotFound,
         UsernameHasInvalidChars,
+        AccountAlreadyRegistered,
     }
 }
 
@@ -176,6 +178,7 @@ decl_module! {
 
             Self::validate_username(&username)?;
             ensure!(!<RegistrationOf<T>>::contains_key(&username), Error::<T>::UsernameAlreadyRegistered);
+            ensure!(!<Account<T>>::contains_key(&sender), Error::<T>::AccountAlreadyRegistered);
 
             let registrars = <Registrars<T>>::get();
             let _registrar = registrars.get(reg_index as usize).and_then(Option::as_ref)
@@ -183,6 +186,7 @@ decl_module! {
 
             let item = (reg_index, Judgement::Requested);
             <RegistrationOf<T>>::insert(&username, Registration { judgements: vec![item], account_id: sender.clone() });
+            <Account<T>>::insert(&sender, username);
 
             Self::deposit_event(RawEvent::UsernameRegistered(sender.clone()));
             Self::deposit_event(RawEvent::JudgementRequested(sender, reg_index));
@@ -209,7 +213,8 @@ decl_module! {
 
             if let Some(registration) = <RegistrationOf<T>>::get(&username) {
                 if registration.account_id == sender {
-                    <RegistrationOf<T>>::remove(&username)
+                    <RegistrationOf<T>>::remove(&username);
+                    <Account<T>>::remove(&sender);
                 } else {
                     return Err(Error::<T>::UnregisterForbidden.into())
                 }
@@ -238,6 +243,7 @@ decl_module! {
 
             Self::validate_username(&username)?;
             let registration = <RegistrationOf<T>>::take(&username).ok_or(Error::<T>::UsernameNotFound)?;
+            <Account<T>>::remove(&registration.account_id);
 
             Self::deposit_event(RawEvent::UsernameKilled(registration.account_id));
 

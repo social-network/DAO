@@ -32,6 +32,10 @@ fn registration_and_unregistration_should_work() {
             UsernameRegistry::register(Origin::signed(4), b"foo".to_vec(), 0),
             Error::<Test>::UsernameAlreadyRegistered,
         );
+        assert_noop!(
+            UsernameRegistry::register(Origin::signed(4), b"bar".to_vec(), 0),
+            Error::<Test>::AccountAlreadyRegistered,
+        );
         assert_eq!(
             UsernameRegistry::registration_of(b"foo".to_vec()),
             Some(Registration {
@@ -39,6 +43,7 @@ fn registration_and_unregistration_should_work() {
                 account_id: 4
             }),
         );
+        assert_eq!(UsernameRegistry::account(4), Some(b"foo".to_vec()));
         assert_noop!(
             UsernameRegistry::unregister(Origin::signed(5), b"foo".to_vec()),
             Error::<Test>::UnregisterForbidden,
@@ -52,6 +57,7 @@ fn registration_and_unregistration_should_work() {
             b"foo".to_vec()
         ));
         assert_eq!(UsernameRegistry::registration_of(b"foo".to_vec()), None);
+        assert_eq!(UsernameRegistry::account(4), None);
     });
 }
 
@@ -85,6 +91,7 @@ fn killing_username_should_work() {
             b"foo".to_vec()
         ));
         assert_eq!(UsernameRegistry::registration_of(b"foo".to_vec()), None);
+        assert_eq!(UsernameRegistry::account(4), None);
     });
 }
 
