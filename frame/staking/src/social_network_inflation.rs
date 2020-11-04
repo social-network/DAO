@@ -4,7 +4,7 @@ use sp_runtime::{Perbill, Percent, SaturatedConversion, traits::{AtLeast32BitUns
 /// The total payout to all validators (and their nominators) per era and maximum payout.
 ///
 /// Defined as such:
-/// `maximum-payout = 1.00042 * total-tokens (1 - 0.00000084) ^ era-index`
+/// `maximum-payout = 1.0003 * total-tokens (1 - 0.00005) ^ era-index`
 /// `staker-payout = maximum_payout * 0.7`
 pub fn compute_total_payout<N>(
     era_index: EraIndex,
