@@ -280,6 +280,7 @@ pub mod slashing;
 pub mod offchain_election;
 pub mod inflation;
 pub mod default_weights;
+mod social_network_inflation;
 
 use sp_std::{
 	result,
@@ -2687,7 +2688,8 @@ impl<T: Trait> Module<T> {
 	/// Compute payout for era.
 	fn end_era(active_era: ActiveEraInfo, _session_index: SessionIndex) {
 		// Note: active_era_start can be None if end era is called during genesis config.
-		if let Some(active_era_start) = active_era.start {
+		if let Some(_active_era_start) = active_era.start {
+			/*
 			let now_as_millis_u64 = T::UnixTime::now().as_millis().saturated_into::<u64>();
 
 			let era_duration = now_as_millis_u64 - active_era_start;
@@ -2697,6 +2699,11 @@ impl<T: Trait> Module<T> {
 				T::Currency::total_issuance(),
 				// Duration of era; more than u64::MAX is rewarded as u64::MAX.
 				era_duration.saturated_into::<u64>(),
+			);
+			*/
+			let (validator_payout, max_payout) = social_network_inflation::compute_total_payout(
+				active_era.index,
+				Self::eras_total_stake(&active_era.index),
 			);
 			let rest = max_payout.saturating_sub(validator_payout);
 
