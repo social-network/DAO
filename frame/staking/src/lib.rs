@@ -2704,6 +2704,7 @@ impl<T: Trait> Module<T> {
 			let (validator_payout, max_payout) = social_network_inflation::compute_total_payout(
 				active_era.index,
 				Self::eras_total_stake(&active_era.index),
+				T::Currency::total_issuance(),
 			);
 			let rest = max_payout.saturating_sub(validator_payout);
 
