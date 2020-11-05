@@ -10,12 +10,12 @@ pub fn compute_total_payout<N>(
     era_index: EraIndex,
     total_tokens: N,
 ) -> (N, N) where N: AtLeast32BitUnsigned + Clone {
-    let k1 = Perbill::from_rational_approximation(300_000u128, 1_000_000_000u128);
+    let k1 = Perbill::from_rational_approximation(233_278u128, 1_000_000_000u128);
     let k2 = Perbill::from_rational_approximation(999_950_000u128, 1_000_000_000u128)
         .saturating_pow(era_index.saturated_into());
     let maximum_payout = k2.mul_ceil(total_tokens.clone() + k1.mul_ceil(total_tokens));
-    let reward_coefficient = Percent::from_rational_approximation(7u32, 10u32);
-    let staker_payout = reward_coefficient.mul_floor(maximum_payout.clone());
+    let staker_to_treasury_ratio = Percent::from_rational_approximation(7u32, 10u32);
+    let staker_payout = staker_to_treasury_ratio.mul_floor(maximum_payout.clone());
     (staker_payout, maximum_payout)
 }
 
@@ -23,31 +23,7 @@ pub fn compute_total_payout<N>(
 mod test {
 	#[test]
 	fn calculation_is_sensible() {
-        const TOTAL_TOKENS: u128 = 10_000;
-
-        assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS), (7_002, 10_003));
-        assert_eq!(super::compute_total_payout(10u32, TOTAL_TOKENS), (6_998, 9_998));
-        assert_eq!(super::compute_total_payout(100u32, TOTAL_TOKENS), (6_967, 9_954));
-        assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS), (6_829, 9_757));
-        assert_eq!(super::compute_total_payout(1_000u32, TOTAL_TOKENS), (6_661, 9_516));
-        assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS), (4_247, 6_068));
-        assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS), (47, 68));
-        assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS), (0, 0));
-
-
-        const TOTAL_TOKENS2: u128 = 100_000;
-
-        assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS2), (70_021, 100_030));
-        assert_eq!(super::compute_total_payout(10u32, TOTAL_TOKENS2), (69_986, 99_980));
-        assert_eq!(super::compute_total_payout(100u32, TOTAL_TOKENS2), (69_672, 99_532));
-        assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS2), (68_292, 97_561));
-        assert_eq!(super::compute_total_payout(1_000u32, TOTAL_TOKENS2), (66_606, 95_152));
-        assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS2), (42_469, 60_671));
-        assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS2), (471, 673));
-        assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS2), (0, 0));
-
-
-        const TOTAL_TOKENS3: u128 = 100_000_000;
+        const TOTAL_TOKENS3: u128 = 77_777_777;
 
         assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS3), (70_021_000, 100_030_000));
         assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS3), (68_292_115, 97_560_165));
@@ -55,7 +31,6 @@ mod test {
         assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS3), (42_469_077, 60_670_110));
         assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS3), (471_044, 672_920));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS3), (0, 0));
-
 
         const TOTAL_TOKENS4: u128 = 1_000_000_000;
 
@@ -65,7 +40,6 @@ mod test {
         assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS4), (424_690_768, 606_701_098));
         assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS4), (4_710_437, 6_729_196));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS4), (0, 0));
-
 
         const TOTAL_TOKENS5: u128 = 10_000_000_000;
 
