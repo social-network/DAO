@@ -25,6 +25,7 @@ pallet-mission-tokens = { default-features = false, version = '0.1.0', path = '.
 sp-runtime = { default-features = false, version = '2.0.0', path = '../../primitives/runtime' }
 
 [dev-dependencies]
+pallet-mission-tokens = { default-features = false, version = '0.1.0', path = '../mission-tokens' }
 sp-core = { default-features = false, version = '2.0.0', path = '../../primitives/core' }
 sp-io = { default-features = false, version = '2.0.0', path = '../../primitives/io' }
 sp-runtime = { default-features = false, version = '2.0.0', path = '../../primitives/runtime' }

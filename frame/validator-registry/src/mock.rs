@@ -51,9 +51,22 @@ impl system::Trait for Test {
     type SystemWeightInfo = ();
 }
 
+parameter_types! {
+    pub const ExistentialDepositOfMissionTokens: u128 = 1_000;
+    pub const MaxMissionTokensSupply: u128 = 7_777_777_777;
+}
+
+impl pallet_mission_tokens::Trait for Test {
+    type Event = ();
+    type Balance = u128;
+    type MissionTokenId = u32;
+    type ExistentialDeposit = ExistentialDepositOfMissionTokens;
+    type OnNewAccount = ();
+    type MaxMissionTokensSupply = MaxMissionTokensSupply;
+}
+
 impl Trait for Test {
     type Event = ();
-    type MissionId = u32;
 }
 
 pub type ValidatorRegistry = Module<Test>;
