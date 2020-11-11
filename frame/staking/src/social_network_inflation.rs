@@ -11,7 +11,7 @@ pub fn compute_total_payout<N>(
     total_tokens: N,
     total_issuance: N,
 ) -> (N, N) where N: AtLeast32BitUnsigned + Clone {
-    if era_index < 360000 {
+    if era_index < 360_000 {
         // If era < 360,000 mint according to inflation formula
         let k1 = Perbill::from_rational_approximation(233_278u128, 1_000_000_000u128);
         let k2 = Perbill::from_rational_approximation(999_950_000u128, 1_000_000_000u128)
@@ -25,6 +25,11 @@ pub fn compute_total_payout<N>(
             } else {
                 (staker_payout, maximum_payout)
             }
+    } else if era_index == 360_000 {
+        let maximum_payout = 7_777_777_777u128.saturated_into::<N>().saturating_sub(total_issuance);
+        let staker_to_treasury_ratio = Percent::from_rational_approximation(7u32, 10u32);
+        let staker_maximum = staker_to_treasury_ratio.mul_floor(maximum_payout.clone());
+        (staker_maximum, maximum_payout)
     } else {
         // If era > 360,000 no more minting
         let maximum_payout = Zero::zero();
