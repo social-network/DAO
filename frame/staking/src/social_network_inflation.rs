@@ -120,5 +120,30 @@ mod test {
         assert_eq!(super::compute_total_payout(300_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE5), (0, 0));
         assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE5), (0, 0));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE5), (0, 0));
-	}
+    }
+
+    #[test]
+    fn total_issuance_should_grow_predictable() {
+        const TOTAL_ISSUANCE: u128 = 77_777_777;
+        const TOTAL_TOKENS: u128 = 77_777_777;
+
+        assert_eq!(total_issuance_after_n_eras(1, TOTAL_TOKENS, TOTAL_ISSUANCE), 77795921); // vs 77795919
+        assert_eq!(total_issuance_after_n_eras(10, TOTAL_TOKENS, TOTAL_ISSUANCE), 77959180); // vs 77959356
+        assert_eq!(total_issuance_after_n_eras(20, TOTAL_TOKENS, TOTAL_ISSUANCE), 78140492); // vs 78141267
+        assert_eq!(total_issuance_after_n_eras(30, TOTAL_TOKENS, TOTAL_ISSUANCE), 78321713); // vs 78323512
+        assert_eq!(total_issuance_after_n_eras(40, TOTAL_TOKENS, TOTAL_ISSUANCE), 78502844); // vs 78506091
+        assert_eq!(total_issuance_after_n_eras(50, TOTAL_TOKENS, TOTAL_ISSUANCE), 78683884); // vs 78689003
+        assert_eq!(total_issuance_after_n_eras(60, TOTAL_TOKENS, TOTAL_ISSUANCE), 78864834); // vs 78872250
+        assert_eq!(total_issuance_after_n_eras(70, TOTAL_TOKENS, TOTAL_ISSUANCE), 79045693); // vs 79055831
+        assert_eq!(total_issuance_after_n_eras(80, TOTAL_TOKENS, TOTAL_ISSUANCE), 79226462); // vs 79239747
+        assert_eq!(total_issuance_after_n_eras(90, TOTAL_TOKENS, TOTAL_ISSUANCE), 79407140); // vs 79423998
+        assert_eq!(total_issuance_after_n_eras(100, TOTAL_TOKENS, TOTAL_ISSUANCE), 79587728); // vs 79608584
+    }
+
+    fn total_issuance_after_n_eras(n: super::EraIndex, total_tokens: u128, total_issuance: u128) -> u128 {
+        (0..n).fold(total_issuance, |mut acc, era| {
+            acc += super::compute_total_payout(era, total_tokens, total_issuance).1;
+            acc
+        })
+    }
 }
