@@ -194,6 +194,8 @@ mod test {
         const TOTAL_TOKENS2: u128 = 9_999_900 * MILLICENTS;
         const TOTAL_ISSUANCE2: u128 = 93_328_000 * DOLLARS;
 
+        assert_eq!(total_issuance_after_n_eras(3, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_339_332_600_790_002_206_009);
+        assert_eq!(total_issuance_after_n_eras(4, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_341_510_932_501_989_921_367);
         assert_eq!(total_issuance_after_n_eras(21, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_378_603_678_523_154_624_472);
     }
 
