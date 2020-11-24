@@ -179,7 +179,24 @@ mod test {
         const TOTAL_ISSUANCE: u128 = 77_777_777 * DOLLARS;
 
         assert_eq!(total_issuance_after_n_eras(1, TOTAL_TOKENS, TOTAL_ISSUANCE), 7779591991115123927800);
+        assert_eq!(total_issuance_after_n_eras(2, TOTAL_TOKENS, TOTAL_ISSUANCE), 7781406614728733143145);
+        assert_eq!(total_issuance_after_n_eras(3, TOTAL_TOKENS, TOTAL_ISSUANCE), 7783221570879691326275);
+        assert_eq!(total_issuance_after_n_eras(4, TOTAL_TOKENS, TOTAL_ISSUANCE), 7785036859606862127760);
+        assert_eq!(total_issuance_after_n_eras(5, TOTAL_TOKENS, TOTAL_ISSUANCE), 7786852480950925152130);
+        assert_eq!(total_issuance_after_n_eras(6, TOTAL_TOKENS, TOTAL_ISSUANCE), 7788668434950745258560);
+        assert_eq!(total_issuance_after_n_eras(7, TOTAL_TOKENS, TOTAL_ISSUANCE), 7790484721647004106038);
+        assert_eq!(total_issuance_after_n_eras(8, TOTAL_TOKENS, TOTAL_ISSUANCE), 7792301341078567760186);
+        assert_eq!(total_issuance_after_n_eras(9, TOTAL_TOKENS, TOTAL_ISSUANCE), 7794118293286119932604);
         assert_eq!(total_issuance_after_n_eras(10, TOTAL_TOKENS, TOTAL_ISSUANCE), 7795935578308527893200);
+        assert_eq!(total_issuance_after_n_eras(11, TOTAL_TOKENS, TOTAL_ISSUANCE), 7797753196186477404336);
+        assert_eq!(total_issuance_after_n_eras(12, TOTAL_TOKENS, TOTAL_ISSUANCE), 7799571146958836938047);
+        assert_eq!(total_issuance_after_n_eras(13, TOTAL_TOKENS, TOTAL_ISSUANCE), 7801389430666294305610);
+        assert_eq!(total_issuance_after_n_eras(14, TOTAL_TOKENS, TOTAL_ISSUANCE), 7803208047347719179031);
+        assert_eq!(total_issuance_after_n_eras(15, TOTAL_TOKENS, TOTAL_ISSUANCE), 7805026997043801416651);
+        assert_eq!(total_issuance_after_n_eras(16, TOTAL_TOKENS, TOTAL_ISSUANCE), 7806846279793411888287);
+        assert_eq!(total_issuance_after_n_eras(17, TOTAL_TOKENS, TOTAL_ISSUANCE), 7808665895637242497501);
+        assert_eq!(total_issuance_after_n_eras(18, TOTAL_TOKENS, TOTAL_ISSUANCE), 7810485844614165309766);
+        assert_eq!(total_issuance_after_n_eras(19, TOTAL_TOKENS, TOTAL_ISSUANCE), 7812306126764874272016);
         assert_eq!(total_issuance_after_n_eras(20, TOTAL_TOKENS, TOTAL_ISSUANCE), 7814126742128242643221);
         assert_eq!(total_issuance_after_n_eras(30, TOTAL_TOKENS, TOTAL_ISSUANCE), 7832351231238604870559);
         assert_eq!(total_issuance_after_n_eras(40, TOTAL_TOKENS, TOTAL_ISSUANCE), 7850609085428966439910);
@@ -194,8 +211,11 @@ mod test {
         const TOTAL_TOKENS2: u128 = 9_999_900 * MILLICENTS;
         const TOTAL_ISSUANCE2: u128 = 93_328_000 * DOLLARS;
 
+        assert_eq!(total_issuance_after_n_eras(1, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_334_977_134_585_643_327_800);
+        assert_eq!(total_issuance_after_n_eras(2, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_337_154_668_166_765_363_044);
         assert_eq!(total_issuance_after_n_eras(3, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_339_332_600_790_002_206_009);
         assert_eq!(total_issuance_after_n_eras(4, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_341_510_932_501_989_921_367);
+        assert_eq!(total_issuance_after_n_eras(5, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_343_689_663_351_543_703_776);
         assert_eq!(total_issuance_after_n_eras(21, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_378_603_678_523_154_624_472);
     }
 
