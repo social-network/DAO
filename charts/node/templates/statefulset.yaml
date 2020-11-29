@@ -80,12 +80,6 @@ spec:
       - name: {{ .Values.app }}
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        {{- if .Values.resources }}
-        resources:
-          requests:
-            memory: {{ .Values.resources.memory }}
-            cpu: {{ .Values.resources.cpu }}
-        {{- end }}
         ports:
         - containerPort: 30333
           name: p2p
@@ -145,4 +139,4 @@ spec:
       storageClassName: {{ .Values.storage_class }}
       resources:
         requests:
-          storage: 32Gi
+          storage: {{ .Values.storage_size }}

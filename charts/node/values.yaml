@@ -78,4 +78,7 @@ limits:
   memory: 2Gi
 
 
+storage_size: 32Gi
+
+
 storage_class: do-block-storage
