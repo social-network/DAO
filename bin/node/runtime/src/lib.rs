@@ -964,6 +964,11 @@ impl pallet_mission_tokens::Trait for Runtime {
 	type ExistentialDeposit = ExistentialDepositOfMissionTokens;
 	type OnNewAccount = ();
 	type MaxMissionTokensSupply = MaxMissionTokensSupply;
+	type MissionCreatorOrigin = EnsureOneOf<
+		AccountId,
+		EnsureRoot<AccountId>,
+		pallet_collective::EnsureMembers<_4, AccountId, CouncilCollective>
+	>;
 }
 
 impl pallet_social_treasury::Trait for Runtime {

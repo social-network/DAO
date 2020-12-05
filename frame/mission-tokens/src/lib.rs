@@ -7,8 +7,8 @@ use frame_support::{
     dispatch::DispatchResult,
     ensure,
     traits::{
-        ExistenceRequirement, ExistenceRequirement::AllowDeath, Get, Imbalance, LockIdentifier,
-        OnNewAccount, StoredMap, TryDrop, WithdrawReason, WithdrawReasons,
+        EnsureOrigin, ExistenceRequirement, ExistenceRequirement::AllowDeath, Get, Imbalance,
+        LockIdentifier, OnNewAccount, StoredMap, TryDrop, WithdrawReason, WithdrawReasons,
     },
     Parameter,
 };
@@ -44,6 +44,9 @@ pub trait Trait: frame_system::Trait {
     type OnNewAccount: OnNewAccount<(Self::MissionTokenId, Self::AccountId)>;
 
     type MaxMissionTokensSupply: Get<u128>;
+
+    /// Origin from which can create a new mission.
+    type MissionCreatorOrigin: EnsureOrigin<Self::Origin>;
 }
 
 /// Simplified reasons for withdrawing balance.
@@ -138,7 +141,7 @@ impl<Balance: Saturating + Copy + Ord> AccountData<Balance> {
 
 decl_storage! {
     trait Store for Module<T: Trait> as MissionTokens {
-        MaxMissionTokenId get(fn max_mission_token_id): T::MissionTokenId = 12.into();
+        MaxMissionTokenId get(fn max_mission_token_id): T::MissionTokenId = 17.into();
         MinMissionTokenId get(fn min_mission_token_id): T::MissionTokenId = 1.into();
 
         pub TotalIssuance: map hasher(blake2_128_concat) T::MissionTokenId => T::Balance;
@@ -179,6 +182,7 @@ decl_event!(
         Unreserved(AccountId, MissionTokenId, MissionTokenBalance),
         /// A new \[account\] was created.
         NewAccount(AccountId, MissionTokenId),
+        MissionCreated(MissionTokenId),
     }
 );
 
@@ -226,6 +230,16 @@ decl_module! {
             let transactor = ensure_signed(origin)?;
             let dest = T::Lookup::lookup(target)?;
             Self::do_transfer(&transactor, &dest, token_id, value, ExistenceRequirement::AllowDeath)?;
+        }
+
+        #[weight = 1_000_000_000_000]
+        pub fn create_mission(origin) {
+            T::MissionCreatorOrigin::ensure_origin(origin)?;
+
+            let new_mission_id = <MaxMissionTokenId<T>>::get().checked_add(&1.into()).ok_or(Error::<T>::Overflow)?;
+            <MaxMissionTokenId<T>>::put(new_mission_id);
+
+            Self::deposit_event(RawEvent::MissionCreated(new_mission_id));
         }
     }
 }
