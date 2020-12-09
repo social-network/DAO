@@ -1042,13 +1042,15 @@ decl_module! {
                         let (min_token_id, max_token_id) = <pallet_mission_tokens::Module<T>>::mission_token_ids();
 
                         for (account_id, points) in reward_points.individual {
-                            let mission_token_id = <pallet_validator_registry::Module<T>>::mission_of(account_id);
-                            if mission_token_id >= min_token_id && mission_token_id <= max_token_id {
-                                <pallet_mission_tokens::Module<T>>::mint(
-                                    treasury_account_id.clone(),
-                                    mission_token_id,
-                                    points.into()
-                                );
+                            if let Some(controller) = <pallet_staking::Module<T>>::bonded(account_id) {
+                                let mission_token_id = <pallet_validator_registry::Module<T>>::mission_of(controller);
+                                if mission_token_id >= min_token_id && mission_token_id <= max_token_id {
+                                    <pallet_mission_tokens::Module<T>>::mint(
+                                        treasury_account_id.clone(),
+                                        mission_token_id,
+                                        points.into()
+                                    );
+                                }
                             }
                         }
 
