@@ -43,6 +43,10 @@ pub fn compute_total_payout<N>(
 
 #[cfg(test)]
 mod test {
+    pub const MILLICENTS: u128 = 1_000_000_000;
+    pub const CENTS: u128 = 1_000 * MILLICENTS;
+    pub const DOLLARS: u128 = 100 * CENTS;
+
 	#[test]
 	fn calculation_is_sensible() {
         const TOTAL_TOKENS: u128 = 77_777_777;
@@ -71,6 +75,7 @@ mod test {
         assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (5390000000, 7700000000));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (0, 0));
 
+
         const TOTAL_ISSUANCE4: u128 = 1_000_000_000;
 
         assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (18144, 233278));
@@ -96,6 +101,7 @@ mod test {
         assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (4744444443, 6777777777));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (0, 0));
 
+
         const TOTAL_ISSUANCE5: u128 = 10_000_000_000;
 
         assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS, TOTAL_ISSUANCE5), (18144, 2332780));
@@ -120,29 +126,110 @@ mod test {
         assert_eq!(super::compute_total_payout(300_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE5), (0, 0));
         assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE5), (0, 0));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE5), (0, 0));
+
+
+        const TOTAL_TOKENS2: u128 = 77 * DOLLARS;
+        const TOTAL_ISSUANCE6: u128 = 77_777_777 * DOLLARS;
+
+        assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1796240600000, 1814384426300600000));
+        assert_eq!(super::compute_total_payout(1u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1796150787970, 1814293707079284970));
+        assert_eq!(super::compute_total_payout(2u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1796060979533, 1814202991486738793));
+        assert_eq!(super::compute_total_payout(3u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795971174688, 1814112279522961468));
+        assert_eq!(super::compute_total_payout(4u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795881375232, 1814021573002337422));
+        assert_eq!(super::compute_total_payout(5u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795791579368, 1813930870110482229));
+        assert_eq!(super::compute_total_payout(6u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795701788893, 1813840172661780315));
+        assert_eq!(super::compute_total_payout(7u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795612002010, 1813749478841847253));
+        assert_eq!(super::compute_total_payout(8u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795522220516, 1813658790465067470));
+        assert_eq!(super::compute_total_payout(9u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795432442615, 1813568105717056540));
+        assert_eq!(super::compute_total_payout(10u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1795342670102, 1813477426412198888));
+        assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1751889711362, 1769585549335648775));
+        assert_eq!(super::compute_total_payout(1_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1708633888231, 1725892799135500725));
+        assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (1089454307538, 1100458885498002147));
+        assert_eq!(super::compute_total_payout(60_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (89405758098, 90308845659873757));
+        assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (12083628451, 12205685181767592));
+        assert_eq!(super::compute_total_payout(120_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (4433874426, 4478660991184501));
+        assert_eq!(super::compute_total_payout(180_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (204078080, 206139472209717));
+        assert_eq!(super::compute_total_payout(240_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (0, 0));
+        assert_eq!(super::compute_total_payout(300_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (0, 0));
+        assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (0, 0));
+        assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS2, TOTAL_ISSUANCE6), (0, 0));
+    }
+
+    #[test]
+    fn maximum_payout_should_grow_predictable() {
+        const TOTAL_TOKENS: u128 = 77_777_777;
+        const TOTAL_ISSUANCE: u128 = 77_777_777;
+
+        assert_eq!(maximum_payout_after_n_eras(1, TOTAL_TOKENS, TOTAL_ISSUANCE), 77795921); // vs 77795919
+        assert_eq!(maximum_payout_after_n_eras(10, TOTAL_TOKENS, TOTAL_ISSUANCE), 77959370); // vs 77959356
+        assert_eq!(maximum_payout_after_n_eras(20, TOTAL_TOKENS, TOTAL_ISSUANCE), 78141297); // vs 78141267
+        assert_eq!(maximum_payout_after_n_eras(30, TOTAL_TOKENS, TOTAL_ISSUANCE), 78323557); // vs 78323512
+        assert_eq!(maximum_payout_after_n_eras(40, TOTAL_TOKENS, TOTAL_ISSUANCE), 78506150); // vs 78506091
+        assert_eq!(maximum_payout_after_n_eras(50, TOTAL_TOKENS, TOTAL_ISSUANCE), 78689077); // vs 78689003
+        assert_eq!(maximum_payout_after_n_eras(60, TOTAL_TOKENS, TOTAL_ISSUANCE), 78872338); // vs 78872250
+        assert_eq!(maximum_payout_after_n_eras(70, TOTAL_TOKENS, TOTAL_ISSUANCE), 79055935); // vs 79055831
+        assert_eq!(maximum_payout_after_n_eras(80, TOTAL_TOKENS, TOTAL_ISSUANCE), 79239866); // vs 79239747
+        assert_eq!(maximum_payout_after_n_eras(90, TOTAL_TOKENS, TOTAL_ISSUANCE), 79424133); // vs 79423998
+        assert_eq!(maximum_payout_after_n_eras(100, TOTAL_TOKENS, TOTAL_ISSUANCE), 79608736); // vs 79608584
     }
 
     #[test]
     fn total_issuance_should_grow_predictable() {
-        const TOTAL_ISSUANCE: u128 = 77_777_777;
-        const TOTAL_TOKENS: u128 = 77_777_777;
+        const TOTAL_TOKENS: u128 = 399_999_900 * MILLICENTS;
+        const TOTAL_ISSUANCE: u128 = 77_777_777 * DOLLARS;
 
-        assert_eq!(total_issuance_after_n_eras(1, TOTAL_TOKENS, TOTAL_ISSUANCE), 77795921); // vs 77795919
-        assert_eq!(total_issuance_after_n_eras(10, TOTAL_TOKENS, TOTAL_ISSUANCE), 77959180); // vs 77959356
-        assert_eq!(total_issuance_after_n_eras(20, TOTAL_TOKENS, TOTAL_ISSUANCE), 78140492); // vs 78141267
-        assert_eq!(total_issuance_after_n_eras(30, TOTAL_TOKENS, TOTAL_ISSUANCE), 78321713); // vs 78323512
-        assert_eq!(total_issuance_after_n_eras(40, TOTAL_TOKENS, TOTAL_ISSUANCE), 78502844); // vs 78506091
-        assert_eq!(total_issuance_after_n_eras(50, TOTAL_TOKENS, TOTAL_ISSUANCE), 78683884); // vs 78689003
-        assert_eq!(total_issuance_after_n_eras(60, TOTAL_TOKENS, TOTAL_ISSUANCE), 78864834); // vs 78872250
-        assert_eq!(total_issuance_after_n_eras(70, TOTAL_TOKENS, TOTAL_ISSUANCE), 79045693); // vs 79055831
-        assert_eq!(total_issuance_after_n_eras(80, TOTAL_TOKENS, TOTAL_ISSUANCE), 79226462); // vs 79239747
-        assert_eq!(total_issuance_after_n_eras(90, TOTAL_TOKENS, TOTAL_ISSUANCE), 79407140); // vs 79423998
-        assert_eq!(total_issuance_after_n_eras(100, TOTAL_TOKENS, TOTAL_ISSUANCE), 79587728); // vs 79608584
+        assert_eq!(total_issuance_after_n_eras(1, TOTAL_TOKENS, TOTAL_ISSUANCE), 7779591991115123927800);
+        assert_eq!(total_issuance_after_n_eras(2, TOTAL_TOKENS, TOTAL_ISSUANCE), 7781406614728733143145);
+        assert_eq!(total_issuance_after_n_eras(3, TOTAL_TOKENS, TOTAL_ISSUANCE), 7783221570879691326275);
+        assert_eq!(total_issuance_after_n_eras(4, TOTAL_TOKENS, TOTAL_ISSUANCE), 7785036859606862127760);
+        assert_eq!(total_issuance_after_n_eras(5, TOTAL_TOKENS, TOTAL_ISSUANCE), 7786852480950925152130);
+        assert_eq!(total_issuance_after_n_eras(6, TOTAL_TOKENS, TOTAL_ISSUANCE), 7788668434950745258560);
+        assert_eq!(total_issuance_after_n_eras(7, TOTAL_TOKENS, TOTAL_ISSUANCE), 7790484721647004106038);
+        assert_eq!(total_issuance_after_n_eras(8, TOTAL_TOKENS, TOTAL_ISSUANCE), 7792301341078567760186);
+        assert_eq!(total_issuance_after_n_eras(9, TOTAL_TOKENS, TOTAL_ISSUANCE), 7794118293286119932604);
+        assert_eq!(total_issuance_after_n_eras(10, TOTAL_TOKENS, TOTAL_ISSUANCE), 7795935578308527893200);
+        assert_eq!(total_issuance_after_n_eras(11, TOTAL_TOKENS, TOTAL_ISSUANCE), 7797753196186477404336);
+        assert_eq!(total_issuance_after_n_eras(12, TOTAL_TOKENS, TOTAL_ISSUANCE), 7799571146958836938047);
+        assert_eq!(total_issuance_after_n_eras(13, TOTAL_TOKENS, TOTAL_ISSUANCE), 7801389430666294305610);
+        assert_eq!(total_issuance_after_n_eras(14, TOTAL_TOKENS, TOTAL_ISSUANCE), 7803208047347719179031);
+        assert_eq!(total_issuance_after_n_eras(15, TOTAL_TOKENS, TOTAL_ISSUANCE), 7805026997043801416651);
+        assert_eq!(total_issuance_after_n_eras(16, TOTAL_TOKENS, TOTAL_ISSUANCE), 7806846279793411888287);
+        assert_eq!(total_issuance_after_n_eras(17, TOTAL_TOKENS, TOTAL_ISSUANCE), 7808665895637242497501);
+        assert_eq!(total_issuance_after_n_eras(18, TOTAL_TOKENS, TOTAL_ISSUANCE), 7810485844614165309766);
+        assert_eq!(total_issuance_after_n_eras(19, TOTAL_TOKENS, TOTAL_ISSUANCE), 7812306126764874272016);
+        assert_eq!(total_issuance_after_n_eras(20, TOTAL_TOKENS, TOTAL_ISSUANCE), 7814126742128242643221);
+        assert_eq!(total_issuance_after_n_eras(30, TOTAL_TOKENS, TOTAL_ISSUANCE), 7832351231238604870559);
+        assert_eq!(total_issuance_after_n_eras(40, TOTAL_TOKENS, TOTAL_ISSUANCE), 7850609085428966439910);
+        assert_eq!(total_issuance_after_n_eras(50, TOTAL_TOKENS, TOTAL_ISSUANCE), 7868900344496706615256);
+        assert_eq!(total_issuance_after_n_eras(60, TOTAL_TOKENS, TOTAL_ISSUANCE), 7887225048247182151909);
+        assert_eq!(total_issuance_after_n_eras(70, TOTAL_TOKENS, TOTAL_ISSUANCE), 7905583236493677458105);
+        assert_eq!(total_issuance_after_n_eras(80, TOTAL_TOKENS, TOTAL_ISSUANCE), 7923974949057354826702);
+        assert_eq!(total_issuance_after_n_eras(90, TOTAL_TOKENS, TOTAL_ISSUANCE), 7942400225767204737617);
+        assert_eq!(total_issuance_after_n_eras(100, TOTAL_TOKENS, TOTAL_ISSUANCE), 7960859106422864852172);
+
+
+        const TOTAL_TOKENS2: u128 = 9_999_900 * MILLICENTS;
+        const TOTAL_ISSUANCE2: u128 = 93_328_000 * DOLLARS;
+
+        assert_eq!(total_issuance_after_n_eras(1, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_334_977_134_585_643_327_800);
+        assert_eq!(total_issuance_after_n_eras(2, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_337_154_668_166_765_363_044);
+        assert_eq!(total_issuance_after_n_eras(3, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_339_332_600_790_002_206_009);
+        assert_eq!(total_issuance_after_n_eras(4, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_341_510_932_501_989_921_367);
+        assert_eq!(total_issuance_after_n_eras(5, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_343_689_663_351_543_703_776);
+        assert_eq!(total_issuance_after_n_eras(21, TOTAL_TOKENS2, TOTAL_ISSUANCE2), 9_378_603_678_523_154_624_472);
+    }
+
+    fn maximum_payout_after_n_eras(n: super::EraIndex, total_tokens: u128, total_issuance: u128) -> u128 {
+        (0..n).fold(total_issuance, |mut acc, era| {
+            acc += super::compute_total_payout(era, total_tokens, acc).1;
+            acc
+        })
     }
 
     fn total_issuance_after_n_eras(n: super::EraIndex, total_tokens: u128, total_issuance: u128) -> u128 {
         (0..n).fold(total_issuance, |mut acc, era| {
-            acc += super::compute_total_payout(era, total_tokens, total_issuance).1;
+            let (staker_payout, maximum_payout) = super::compute_total_payout(era, total_tokens, acc);
+            acc += maximum_payout - staker_payout;
             acc
         })
     }
