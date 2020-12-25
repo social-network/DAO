@@ -105,6 +105,8 @@ In the interests of the community, we require any deeper improvements made to Su
     "logs": "Vec<Log>",
     "logs_bloom": "Bloom"
   },
-  "Id": "AuthorityId"
+  "Id": "AuthorityId",
+  "ChainId": "u8",
+  "ResourceId": "Vec<u8>"
 }
 ```
