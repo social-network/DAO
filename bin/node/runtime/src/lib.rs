@@ -1022,6 +1022,19 @@ impl pallet_username_registry::Trait for Runtime {
 	type WeightInfo = weights::pallet_username_registry::WeightInfo;
 }
 
+parameter_types! {
+    pub const ChainId: u8 = 5;
+    pub const ProposalLifetime: u32 = 50;
+}
+
+impl pallet_chainbridge::Trait for Runtime {
+	type Event = Event;
+    type AdminOrigin = EnsureRoot<Self::AccountId>;
+    type Proposal = Call;
+    type ChainId = ChainId;
+    type ProposalLifetime = ProposalLifetime;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -1069,6 +1082,7 @@ construct_runtime!(
 		SocialTreasury: pallet_social_treasury::{Module, Call, Storage, Event<T>},
 		ValidatorRegistry: pallet_validator_registry::{Module, Call, Storage, Event<T>},
 		UsernameRegistry: pallet_username_registry::{Module, Call, Storage, Event<T>},
+		ChainBridge: pallet_chainbridge::{Module, Call, Storage, Event<T>},
 	}
 );
 
