@@ -119,6 +119,5 @@ pub fn config_endowed(
 			max_members: 999,
 		}),
 		pallet_vesting: Some(Default::default()),
-		pallet_ethereum: Some(Default::default()),
 	}
 }
