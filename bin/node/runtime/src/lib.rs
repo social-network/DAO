@@ -919,18 +919,6 @@ impl pallet_did::Trait for Runtime {
 	type Signature = Signature;
 }
 
-impl pallet_fungible::Trait for Runtime {
-	type Event = Event;
-	type TokenBalance = u64;
-	type TokenId = u64;
-}
-
-impl pallet_swaps::Trait for Runtime {
-	type Event = Event;
-	type SwapId = u64;
-	type Currency = Balances;
-}
-
 parameter_types! {
 	pub const ExistentialDepositOfMissionTokens: u128 = 1_000;
 	pub const MaxMissionTokensSupply: u128 = 7_777_777_777;
@@ -1054,8 +1042,6 @@ construct_runtime!(
 		Multisig: pallet_multisig::{Module, Call, Storage, Event<T>},
 		Evm: pallet_evm::{Module, Call, Storage, Event<T>},
 		Did: pallet_did::{Module, Call, Storage, Event<T>},
-		Fungible: pallet_fungible::{Module, Call, Storage, Event<T>},
-		Swaps: pallet_swaps::{Module, Call, Storage, Event<T>},
 		MissionTokens: pallet_mission_tokens::{Module, Call, Storage, Event<T>},
 		SocialTreasury: pallet_social_treasury::{Module, Call, Storage, Event<T>},
 		ValidatorRegistry: pallet_validator_registry::{Module, Call, Storage, Event<T>},

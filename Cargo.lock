@@ -3885,7 +3885,6 @@ dependencies = [
  "pallet-elections-phragmen",
  "pallet-evm",
  "pallet-finality-tracker",
- "pallet-fungible",
  "pallet-grandpa",
  "pallet-identity",
  "pallet-im-online",
@@ -3906,7 +3905,6 @@ dependencies = [
  "pallet-staking",
  "pallet-staking-reward-curve",
  "pallet-sudo",
- "pallet-swaps",
  "pallet-timestamp",
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
@@ -4498,20 +4496,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-fungible"
-version = "0.1.0"
-dependencies = [
- "frame-support",
- "frame-system",
- "pallet-balances",
- "parity-scale-codec",
- "safe-mix",
- "sp-core",
- "sp-io",
- "sp-runtime",
-]
-
-[[package]]
 name = "pallet-grandpa"
 version = "2.0.0"
 dependencies = [
@@ -4942,21 +4926,6 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std",
-]
-
-[[package]]
-name = "pallet-swaps"
-version = "0.1.0"
-dependencies = [
- "frame-support",
- "frame-system",
- "pallet-balances",
- "pallet-fungible",
- "parity-scale-codec",
- "safe-mix",
- "sp-core",
- "sp-io",
- "sp-runtime",
 ]
 
 [[package]]
