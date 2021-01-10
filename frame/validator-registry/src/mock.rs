@@ -63,6 +63,7 @@ impl pallet_mission_tokens::Trait for Test {
     type ExistentialDeposit = ExistentialDepositOfMissionTokens;
     type OnNewAccount = ();
     type MaxMissionTokensSupply = MaxMissionTokensSupply;
+    type MissionCreatorOrigin = frame_system::EnsureRoot<u64>;
 }
 
 impl Trait for Test {
