@@ -5,7 +5,7 @@ use sp_runtime::{Perbill, Percent, SaturatedConversion, traits::{AtLeast32BitUns
 ///
 /// Defined as such:
 /// `maximum-payout = 1.000233278 * total-tokens (1 - 0.00005) ^ era-index`
-/// `staker-payout = maximum_payout * 0.7`
+/// `staker-payout = maximum_payout * 0.99`
 pub fn compute_total_payout<N>(
     era_index: EraIndex,
     total_tokens: N,
@@ -20,7 +20,7 @@ pub fn compute_total_payout<N>(
         let staker_payout = inflation_rate.mul_ceil(inflation_decay.mul_ceil(total_tokens));
         let maximum_payout = inflation_rate.mul_ceil(inflation_decay.mul_ceil(total_issuance));
 
-        let staker_to_treasury_ratio = Percent::from_rational_approximation(7u32, 10u32);
+        let staker_to_treasury_ratio = Percent::from_rational_approximation(99u32, 100u32);
         let staker_maximum = staker_to_treasury_ratio.mul_floor(maximum_payout.clone());
 
         if staker_payout > staker_maximum {
@@ -30,7 +30,7 @@ pub fn compute_total_payout<N>(
         }
     } else if era_index == 360_000 {
         let maximum_payout = 7_777_777_777u128.saturated_into::<N>().saturating_sub(total_issuance);
-        let staker_to_treasury_ratio = Percent::from_rational_approximation(7u32, 10u32);
+        let staker_to_treasury_ratio = Percent::from_rational_approximation(99u32, 100u32);
         let staker_maximum = staker_to_treasury_ratio.mul_floor(maximum_payout.clone());
         (staker_maximum, maximum_payout)
     } else {
@@ -52,27 +52,27 @@ mod test {
         const TOTAL_TOKENS: u128 = 77_777_777;
         const TOTAL_ISSUANCE3: u128 = 77_777_777;
 
-        assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12700, 18144));
-        assert_eq!(super::compute_total_payout(1u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12700, 18143));
-        assert_eq!(super::compute_total_payout(2u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12700, 18143));
-        assert_eq!(super::compute_total_payout(3u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12699, 18142));
-        assert_eq!(super::compute_total_payout(4u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12698, 18141));
-        assert_eq!(super::compute_total_payout(5u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12698, 18140));
-        assert_eq!(super::compute_total_payout(6u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12697, 18139));
-        assert_eq!(super::compute_total_payout(7u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12696, 18138));
-        assert_eq!(super::compute_total_payout(8u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12695, 18137));
-        assert_eq!(super::compute_total_payout(9u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12695, 18136));
-        assert_eq!(super::compute_total_payout(10u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12694, 18135));
-        assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12387, 17696));
-        assert_eq!(super::compute_total_payout(1_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (12081, 17259));
-        assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (7703, 11005));
-        assert_eq!(super::compute_total_payout(60_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (632, 904));
-        assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (86, 123));
-        assert_eq!(super::compute_total_payout(120_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (31, 45));
+        assert_eq!(super::compute_total_payout(0u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17962, 18144));
+        assert_eq!(super::compute_total_payout(1u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17961, 18143));
+        assert_eq!(super::compute_total_payout(2u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17961, 18143));
+        assert_eq!(super::compute_total_payout(3u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17960, 18142));
+        assert_eq!(super::compute_total_payout(4u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17959, 18141));
+        assert_eq!(super::compute_total_payout(5u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17958, 18140));
+        assert_eq!(super::compute_total_payout(6u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17957, 18139));
+        assert_eq!(super::compute_total_payout(7u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17956, 18138));
+        assert_eq!(super::compute_total_payout(8u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17955, 18137));
+        assert_eq!(super::compute_total_payout(9u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17954, 18136));
+        assert_eq!(super::compute_total_payout(10u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17953, 18135));
+        assert_eq!(super::compute_total_payout(500u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17519, 17696));
+        assert_eq!(super::compute_total_payout(1_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (17086, 17259));
+        assert_eq!(super::compute_total_payout(10_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (10894, 11005));
+        assert_eq!(super::compute_total_payout(60_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (894, 904));
+        assert_eq!(super::compute_total_payout(100_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (121, 123));
+        assert_eq!(super::compute_total_payout(120_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (44, 45));
         assert_eq!(super::compute_total_payout(180_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (2, 3));
         assert_eq!(super::compute_total_payout(240_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (0, 0));
         assert_eq!(super::compute_total_payout(300_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (0, 0));
-        assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (5390000000, 7700000000));
+        assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (7623000000, 7700000000));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE3), (0, 0));
 
 
@@ -98,7 +98,7 @@ mod test {
         assert_eq!(super::compute_total_payout(180_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (3, 27));
         assert_eq!(super::compute_total_payout(240_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (0, 0));
         assert_eq!(super::compute_total_payout(300_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (0, 0));
-        assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (4744444443, 6777777777));
+        assert_eq!(super::compute_total_payout(360_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (6709999999, 6777777777));
         assert_eq!(super::compute_total_payout(500_000u32, TOTAL_TOKENS, TOTAL_ISSUANCE4), (0, 0));
 
 
