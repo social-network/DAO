@@ -266,7 +266,6 @@ impl<T: Trait> Module<T> {
     }
 
     pub fn mint(target: T::AccountId, token_id: T::MissionTokenId, value: T::Balance) {
-        // TODO: add check: calls allowed only for treasure account
         if value.is_zero() {
             return;
         }
