@@ -921,7 +921,7 @@ impl pallet_did::Trait for Runtime {
 
 parameter_types! {
 	pub const ExistentialDepositOfMissionTokens: u128 = 1_000;
-	pub const MaxMissionTokensSupply: u128 = 7_777_777_777;
+	pub const MaxMissionTokensSupply: u128 = 7_777_777_777 * DOLLARS;
 }
 
 impl pallet_mission_tokens::Trait for Runtime {
