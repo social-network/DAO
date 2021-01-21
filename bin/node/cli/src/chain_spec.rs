@@ -66,7 +66,7 @@ pub type ChainSpec = sc_service::GenericChainSpec<
 
 /// Chi config generator
 pub fn chi_config() -> Result<ChainSpec, String> {
-	ChainSpec::from_json_bytes(&include_bytes!("../res/chi.json")[..])
+	ChainSpec::from_json_bytes(&include_bytes!("../res/NET.json")[..])
 }
 
 fn session_keys(
