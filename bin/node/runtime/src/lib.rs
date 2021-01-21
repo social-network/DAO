@@ -22,7 +22,7 @@
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.
 #![recursion_limit="256"]
 
-use sp_std::{marker::PhantomData, prelude::*};
+use sp_std::prelude::*;
 
 use frame_support::{
 	construct_runtime, parameter_types, debug, RuntimeDebug,
@@ -31,16 +31,14 @@ use frame_support::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 	},
 	traits::{Currency, Imbalance, KeyOwnerProofSystem, OnUnbalanced, Randomness, LockIdentifier},
-	ConsensusEngineId,
 };
 use frame_system::{EnsureRoot, EnsureOneOf};
-use frame_support::traits::{FindAuthor, InstanceFilter};
+use frame_support::traits::InstanceFilter;
 use codec::{Encode, Decode};
 use sp_core::{
-	crypto::{KeyTypeId, Public},
+	crypto::KeyTypeId,
 	u32_trait::{_1, _2, _3, _4},
 	OpaqueMetadata,
-	H160,
 	U256
 };
 pub use node_primitives::{AccountId, Signature};
@@ -915,41 +913,10 @@ impl pallet_evm::Trait for Runtime {
 	type ChainId = pallet_evm::SystemChainId;
 }
 
-pub struct EthereumFindAuthor<F>(PhantomData<F>);
-impl<F: FindAuthor<u32>> FindAuthor<H160> for EthereumFindAuthor<F>
-{
-	fn find_author<'a, I>(digests: I) -> Option<H160> where
-		I: 'a + IntoIterator<Item=(ConsensusEngineId, &'a [u8])>
-	{
-		if let Some(author_index) = F::find_author(digests) {
-			let authority_id = Babe::authorities()[author_index as usize].clone();
-			return Some(H160::from_slice(&authority_id.0.to_raw_vec()[4..24]));
-		}
-		None
-	}
-}
-
-impl pallet_ethereum::Trait for Runtime {
-	type Event = Event;
-	type FindAuthor = EthereumFindAuthor<Babe>;
-}
-
 impl pallet_did::Trait for Runtime {
 	type Event = Event;
 	type Public = MultiSigner;
 	type Signature = Signature;
-}
-
-impl pallet_fungible::Trait for Runtime {
-	type Event = Event;
-	type TokenBalance = u64;
-	type TokenId = u64;
-}
-
-impl pallet_swaps::Trait for Runtime {
-	type Event = Event;
-	type SwapId = u64;
-	type Currency = Balances;
 }
 
 parameter_types! {
@@ -1074,10 +1041,7 @@ construct_runtime!(
 		Proxy: pallet_proxy::{Module, Call, Storage, Event<T>},
 		Multisig: pallet_multisig::{Module, Call, Storage, Event<T>},
 		Evm: pallet_evm::{Module, Call, Storage, Event<T>},
-		Ethereum: pallet_ethereum::{Module, Call, Storage, Event, Config, ValidateUnsigned},
 		Did: pallet_did::{Module, Call, Storage, Event<T>},
-		Fungible: pallet_fungible::{Module, Call, Storage, Event<T>},
-		Swaps: pallet_swaps::{Module, Call, Storage, Event<T>},
 		MissionTokens: pallet_mission_tokens::{Module, Call, Storage, Event<T>},
 		SocialTreasury: pallet_social_treasury::{Module, Call, Storage, Event<T>},
 		ValidatorRegistry: pallet_validator_registry::{Module, Call, Storage, Event<T>},

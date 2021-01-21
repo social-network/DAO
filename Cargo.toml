@@ -71,7 +71,6 @@ members = [
 	"frame/democracy",
 	"frame/elections-phragmen",
 	"frame/elections",
-	"frame/ethereum",
 	"frame/evm",
 	"frame/example",
 	"frame/example-offchain-worker",

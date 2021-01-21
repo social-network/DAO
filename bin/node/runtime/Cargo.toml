@@ -56,10 +56,8 @@ pallet-contracts-rpc-runtime-api = { version = "0.8.0", default-features = false
 pallet-democracy = { version = "2.0.0", default-features = false, path = "../../../frame/democracy" }
 pallet-did = { version = "2.0.0", default-features = false, path = "../../../frame/did" }
 pallet-elections-phragmen = { version = "2.0.0", default-features = false, path = "../../../frame/elections-phragmen" }
-pallet-ethereum = { version = "0.1.0", default-features = false, path = "../../../frame/ethereum" }
 pallet-evm = { version = "2.0.0", default-features = false, path = "../../../frame/evm" }
 pallet-finality-tracker = { version = "2.0.0", default-features = false, path = "../../../frame/finality-tracker" }
-pallet-fungible = { version = "0.1.0", default-features = false, path = "../../../frame/swaps/fungible" }
 pallet-grandpa = { version = "2.0.0", default-features = false, path = "../../../frame/grandpa" }
 pallet-im-online = { version = "2.0.0", default-features = false, path = "../../../frame/im-online" }
 pallet-indices = { version = "2.0.0", default-features = false, path = "../../../frame/indices" }
@@ -80,7 +78,6 @@ pallet-scheduler = { version = "2.0.0", default-features = false, path = "../../
 pallet-social-treasury = { version = "0.1.0", default-features = false, path = "../../../frame/social-treasury" }
 pallet-society = { version = "2.0.0", default-features = false, path = "../../../frame/society" }
 pallet-sudo = { version = "2.0.0", default-features = false, path = "../../../frame/sudo" }
-pallet-swaps = { version = "0.1.0", default-features = false, path = "../../../frame/swaps" }
 pallet-timestamp = { version = "2.0.0", default-features = false, path = "../../../frame/timestamp" }
 pallet-treasury = { version = "2.0.0", default-features = false, path = "../../../frame/treasury" }
 pallet-username-registry = { version = "0.1.0", default-features = false, path = "../../../frame/username-registry" }
@@ -156,9 +153,6 @@ std = [
 	"pallet-vesting/std",
 	"pallet-did/std",
 	"pallet-evm/std",
-	"pallet-ethereum/std",
-	"pallet-fungible/std",
-	"pallet-swaps/std",
 	"pallet-mission-tokens/std",
 	"pallet-social-treasury/std",
 	"pallet-validator-registry/std",
