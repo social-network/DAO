@@ -133,10 +133,10 @@ impl OnUnbalanced<NegativeImbalance> for DealWithFees {
 	fn on_unbalanceds<B>(mut fees_then_tips: impl Iterator<Item=NegativeImbalance>) {
 		if let Some(fees) = fees_then_tips.next() {
 			// for fees, 30% to treasury, 70% to author
-			let mut split = fees.ration(30, 70);
+			let mut split = fees.ration(99, 1);
 			if let Some(tips) = fees_then_tips.next() {
 				// for tips, if any, 80% to treasury, 20% to author (though this can be anything)
-				tips.ration_merge_into(80, 20, &mut split);
+				tips.ration_merge_into(99, 1, &mut split);
 			}
 			Treasury::on_unbalanced(split.0);
 			Author::on_unbalanced(split.1);
@@ -475,8 +475,8 @@ impl pallet_staking::Trait for Runtime {
 }
 
 parameter_types! {
-	pub const LaunchPeriod: BlockNumber = 7 * 24 * 60 * MINUTES;
-	pub const VotingPeriod: BlockNumber = 7 * 24 * 60 * MINUTES;
+	pub const LaunchPeriod: BlockNumber = 3 * 24 * 60 * MINUTES;
+	pub const VotingPeriod: BlockNumber = 4 * 24 * 60 * MINUTES;
 	pub const FastTrackVotingPeriod: BlockNumber = 1 * 24 * 60 * MINUTES;
 	pub const InstantAllowed: bool = true;
 	pub const MinimumDeposit: Balance = 100 * DOLLARS;
@@ -835,7 +835,7 @@ impl pallet_identity::Trait for Runtime {
 parameter_types! {
 	pub const ConfigDepositBase: Balance = 5 * DOLLARS;
 	pub const FriendDepositFactor: Balance = 50 * CENTS;
-	pub const MaxFriends: u16 = 9;
+	pub const MaxFriends: u16 = 15;
 	pub const RecoveryDeposit: Balance = 5 * DOLLARS;
 }
 
@@ -920,8 +920,8 @@ impl pallet_did::Trait for Runtime {
 }
 
 parameter_types! {
-	pub const ExistentialDepositOfMissionTokens: u128 = 1_000;
-	pub const MaxMissionTokensSupply: u128 = 7_777_777_777;
+	pub const ExistentialDepositOfMissionTokens: u128 = 1;
+	pub const MaxMissionTokensSupply: u128 = 7_777_777_777 * DOLLARS;
 }
 
 impl pallet_mission_tokens::Trait for Runtime {
@@ -975,8 +975,8 @@ impl pallet_validator_registry::Trait for Runtime {
 }
 
 parameter_types! {
-	pub const MinUsernameLength: u32 = 5;
-	pub const MaxUsernameLength: u32 = 50;
+	pub const MinUsernameLength: u32 = 4;
+	pub const MaxUsernameLength: u32 = 21;
 }
 
 impl pallet_username_registry::Trait for Runtime {
